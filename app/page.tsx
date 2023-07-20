@@ -1,9 +1,16 @@
 import { CarCard, CustomFilter, Hero, SearchBar } from '@/components'
+import { HomeProps } from '@/types';
 import { fetchCars } from '@/utils';
 import Image from 'next/image'
 
-export default async function Home() {
-  // const allCars = await fetchCars();  // комментируем чтобы по время написания кода каждый раз не отправлялся запрос, кол-во которых ограничено
+export default async function Home({searchParams}: HomeProps) {
+  const allCars = await fetchCars({
+    manufacturer:searchParams.manufacturer || '', 
+    year:searchParams.year || 2022,
+    fuel:searchParams.fuel || '',
+    limit:searchParams.limit || 10,
+    model:searchParams.model || '',
+  });  // комментируем чтобы по время написания кода каждый раз не отправлялся запрос, кол-во которых ограничено
 
   const isDataEmpry = !Array.isArray(allCars) || allCars.length <1 || !allCars;
   return (
